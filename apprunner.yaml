@@ -4,16 +4,13 @@ build:
   commands:
     pre-build:
       - echo "Installing dependencies..."
-      - npm cache clean --force
-      - npm install --legacy-peer-deps --force
-      - npm install -g serve
+      - npm install
     build:
-      - echo "Setting build environment..."
-      - export NODE_OPTIONS="--max-old-space-size=4096"
-      - echo "Starting build..."
-      - GENERATE_SOURCEMAP=false DISABLE_ESLINT_PLUGIN=true CI=false npm run build
+      - echo "Building application..."
+      - npm run build
     post-build:
-      - echo "Build completed"
+      - echo "Installing serve..."
+      - npm install -g serve
 run:
   command: serve -s build -l 3000
   network:
@@ -25,13 +22,3 @@ run:
       value: "wss://z8z9mqgwpa.ap-northeast-1.awsapprunner.com"
     - name: NODE_ENV
       value: "production"
-    - name: CI
-      value: "false"
-    - name: DISABLE_ESLINT_PLUGIN
-      value: "true"
-    - name: SKIP_PREFLIGHT_CHECK
-      value: "true"
-    - name: GENERATE_SOURCEMAP
-      value: "false"
-    - name: NODE_OPTIONS
-      value: "--max-old-space-size=4096" 
