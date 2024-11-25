@@ -16,7 +16,6 @@ build:
       - echo "Build completed"
       - ls -la build/
 run:
-  runtime-version: 18.x.x
   command: serve -s build -l 3000
   network:
     port: 3000
