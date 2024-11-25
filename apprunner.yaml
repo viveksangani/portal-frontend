@@ -3,8 +3,10 @@ runtime: nodejs18
 build:
   commands:
     pre-build:
-      - npm ci
+      - echo "Installing dependencies..."
+      - npm install
     build:
+      - echo "Building application..."
       - CI=false npm run build
     post-build:
       - echo "Build completed"
