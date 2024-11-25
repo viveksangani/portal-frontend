@@ -3,7 +3,6 @@ runtime: nodejs18
 build:
   commands:
     pre-build:
-      - cd api2
       - npm ci
     build:
       - CI=false npm run build
@@ -15,9 +14,9 @@ run:
     port: 3000
   env:
     - name: REACT_APP_API_URL
-      value: "https://api.portal.swaroop.ai"
+      value: "https://z8z9mqgwpa.ap-northeast-1.awsapprunner.com"
     - name: REACT_APP_WS_URL
-      value: "wss://api.portal.swaroop.ai"
+      value: "wss://z8z9mqgwpa.ap-northeast-1.awsapprunner.com"
     - name: NODE_ENV
       value: "production"
     - name: CI

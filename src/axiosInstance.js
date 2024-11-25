@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const BACKEND_URL = process.env.NODE_ENV === 'production'
-  ? `http://${publicIp}`  // Replace with your EC2 instance IP
+  ? 'https://z8z9mqgwpa.ap-northeast-1.awsapprunner.com'
   : 'http://localhost:5000';
 
 // Create an axios instance
@@ -42,7 +42,7 @@ axiosInstance.interceptors.response.use(
 
 // Add WebSocket URL configuration
 export const WS_BASE_URL = process.env.NODE_ENV === 'production'
-  ? 'wss://your-production-domain.com'
+  ? 'wss://z8z9mqgwpa.ap-northeast-1.awsapprunner.com'
   : 'ws://localhost:5000';
 
 export default axiosInstance;
