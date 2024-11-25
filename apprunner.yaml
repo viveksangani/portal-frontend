@@ -1,25 +1,26 @@
 version: 1.0
-runtime: nodejs18
+runtime: nodejs16
 build:
   commands:
     pre-build:
       - echo "Installing dependencies..."
-      - npm install --force
+      - rm -rf node_modules package-lock.json
+      - npm install --legacy-peer-deps
     build:
       - echo "Building application..."
-      - npm run build
+      - export NODE_OPTIONS=--max_old_space_size=4096
+      - CI=false GENERATE_SOURCEMAP=false npm run build
     post-build:
       - npm install -g serve
+      - echo "Build completed"
 run:
   command: serve -s build -l 3000
   network:
     port: 3000
   env:
+    - name: NODE_ENV
+      value: "production"
     - name: REACT_APP_API_URL
       value: "https://z8z9mqgwpa.ap-northeast-1.awsapprunner.com"
     - name: REACT_APP_WS_URL
       value: "wss://z8z9mqgwpa.ap-northeast-1.awsapprunner.com"
-    - name: NODE_ENV
-      value: "production"
-    - name: CI
-      value: "false"
