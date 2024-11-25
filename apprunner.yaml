@@ -4,17 +4,12 @@ build:
   commands:
     pre-build:
       - echo "Installing dependencies..."
-      - npm cache clean --force
-      - npm install --legacy-peer-deps
-      - npm install -g serve
+      - npm install --force
     build:
-      - echo "Setting environment variables..."
-      - export NODE_OPTIONS="--max-old-space-size=4096"
-      - echo "Starting build with CI=false..."
-      - DISABLE_ESLINT_PLUGIN=true GENERATE_SOURCEMAP=false CI=false npm run build
+      - echo "Building application..."
+      - npm run build
     post-build:
-      - echo "Build completed"
-      - ls -la build/
+      - npm install -g serve
 run:
   command: serve -s build -l 3000
   network:
@@ -28,11 +23,3 @@ run:
       value: "production"
     - name: CI
       value: "false"
-    - name: NODE_OPTIONS
-      value: "--max-old-space-size=4096"
-    - name: DISABLE_ESLINT_PLUGIN
-      value: "true"
-    - name: GENERATE_SOURCEMAP
-      value: "false"
-    - name: SKIP_PREFLIGHT_CHECK
-      value: "true"
