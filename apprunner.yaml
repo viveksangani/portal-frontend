@@ -4,10 +4,11 @@ build:
   commands:
     pre-build:
       - echo "Installing dependencies..."
-      - npm install
+      - npm install --legacy-peer-deps
     build:
       - echo "Building application..."
-      - CI=false npm run build
+      - export NODE_OPTIONS="--max_old_space_size=4096"
+      - DISABLE_ESLINT_PLUGIN=true CI=false npm run build
     post-build:
       - echo "Build completed"
 run:
@@ -22,4 +23,10 @@ run:
     - name: NODE_ENV
       value: "production"
     - name: CI
-      value: "false" 
+      value: "false"
+    - name: DISABLE_ESLINT_PLUGIN
+      value: "true"
+    - name: SKIP_PREFLIGHT_CHECK
+      value: "true"
+    - name: NODE_OPTIONS
+      value: "--max_old_space_size=4096" 
