@@ -5,44 +5,35 @@ frontend:
             commands:
                 - nvm install 16
                 - nvm use 16
-                - export NODE_ENV=production
                 - npm cache clean --force
                 - rm -rf node_modules package-lock.json
                 - |
-                  cat << EOF > .npmrc
-                  legacy-peer-deps=true
-                  strict-peer-dependencies=false
-                  EOF
+                  echo "legacy-peer-deps=true" > .npmrc
                 - npm install
-                - npm install --save-dev @babel/plugin-proposal-private-property-in-object@7.21.11
-                - npm install --save-dev @babel/core@7.22.20
-                - npm install --save-dev @babel/plugin-transform-private-property-in-object
-                - npm install babel-preset-react-app@10.0.1
+                - npm install -g @babel/plugin-proposal-private-property-in-object@7.21.11
+                - npm install -g @babel/core@7.22.20
+                - npm install -g babel-preset-react-app@10.0.1
                 - |
-                  cat << EOF > .babelrc
-                  {
+                  echo '{
                     "presets": ["react-app"],
                     "plugins": [
                       "@babel/plugin-proposal-private-property-in-object"
                     ]
-                  }
-                  EOF
+                  }' > .babelrc
         build:
             commands:
-                - export NODE_OPTIONS="--max_old_space_size=4096"
                 - |
-                  cat << EOF > .env
+                  cat << EOF > .env.production
                   SKIP_PREFLIGHT_CHECK=true
                   DISABLE_ESLINT_PLUGIN=true
                   NODE_ENV=production
                   GENERATE_SOURCEMAP=false
-                  BABEL_ENV=production
                   EOF
-                - CI=false npm run build
+                - NODE_OPTIONS=--max_old_space_size=4096 CI=false npm run build
     artifacts:
         baseDirectory: build
         files:
             - '**/*'
     cache:
         paths:
-            - 'node_modules/**/*'
+            - node_modules/**/*
