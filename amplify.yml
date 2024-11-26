@@ -8,10 +8,25 @@ frontend:
                 - export NODE_ENV=production
                 - npm cache clean --force
                 - rm -rf node_modules package-lock.json
-                - npm install --legacy-peer-deps
+                - |
+                  cat << EOF > .npmrc
+                  legacy-peer-deps=true
+                  strict-peer-dependencies=false
+                  EOF
+                - npm install
                 - npm install --save-dev @babel/plugin-proposal-private-property-in-object@7.21.11
                 - npm install --save-dev @babel/core@7.22.20
                 - npm install --save-dev @babel/plugin-transform-private-property-in-object
+                - npm install babel-preset-react-app@10.0.1
+                - |
+                  cat << EOF > .babelrc
+                  {
+                    "presets": ["react-app"],
+                    "plugins": [
+                      "@babel/plugin-proposal-private-property-in-object"
+                    ]
+                  }
+                  EOF
         build:
             commands:
                 - export NODE_OPTIONS="--max_old_space_size=4096"
@@ -21,6 +36,7 @@ frontend:
                   DISABLE_ESLINT_PLUGIN=true
                   NODE_ENV=production
                   GENERATE_SOURCEMAP=false
+                  BABEL_ENV=production
                   EOF
                 - CI=false npm run build
     artifacts:
